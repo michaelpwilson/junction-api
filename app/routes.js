@@ -1,11 +1,19 @@
 'use strict';
 
 const Router = require('koa-router');
-const homeController = require('./controllers/home');
+const UserController = require('./controllers/User');
+const session = require('koa-session');
+const redisStore = require('koa-redis');
 
+module.exports = (app) => {
+    const router = new Router();
 
-const router = new Router();
-router.get('/', homeController.welcome);
-router.get('/spec', homeController.showSwaggerSpec);
+    router.use(session({
+        key: 'koa:sess',
+        store: redisStore({})
+    }, app));
 
-module.exports = router;
+    router.post('/user/create', UserController.create);
+
+    return router;
+};

@@ -53,7 +53,9 @@
     "kcors": "^2.2.1",
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
+    "koa-redis": "^3.1.2",
     "koa-router": "^7.4.0",
+    "koa-session": "^5.8.1",
     "swagger-jsdoc": "^1.9.7",
     "uuid": "^3.2.1"
   },

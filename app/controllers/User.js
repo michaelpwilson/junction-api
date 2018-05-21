@@ -2,7 +2,7 @@
 
 const pkginfo = require('../../package.json');
 const spec = require('../spec');
-
+const User = require('../models/User');
 
 /**
  * @swagger
@@ -16,18 +16,12 @@ const spec = require('../spec');
  *       200:
  *         description: Describe general API information
  */
-exports.welcome = ctx => {
-  // BUSINESS LOGIC
-  const data = {
-    name: pkginfo.name,
-    version: pkginfo.version,
-    description: pkginfo.description,
-    author: pkginfo.author
-  };
+exports.create = (ctx) => {
+  let user = new User();
 
-  ctx.res.ok(data, 'Hello, API!');
-};
-
-exports.showSwaggerSpec = ctx => {
-  ctx.body = spec;
+  user.create(ctx.request.body).then((response) => {
+    ctx.res.ok(response, "Successfully created user");
+  }).catch((error) => {
+    ctx.res.badRequest(400, "error", error);
+  });
 };

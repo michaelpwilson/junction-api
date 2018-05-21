@@ -14,30 +14,28 @@ const logMiddleware = require('./middlewares/log');
 const logger = require('./logger');
 const requestId = require('./middlewares/requestId');
 const responseHandler = require('./middlewares/responseHandler');
-const router = require('./routes');
-
 
 const app = new Koa();
+
+const router = require('./routes')(app);
+
+app.keys = ['keys', 'keykeys'];
 
 // Trust proxy
 app.proxy = true;
 
 // Set middlewares
-app.use(
-  bodyParser({
-    enableTypes: ['json', 'form'],
-    formLimit: '10mb',
-    jsonLimit: '10mb'
-  })
-);
+app.use(bodyParser({
+  enableTypes: ['json', 'form'],
+  formLimit: '10mb',
+  jsonLimit: '10mb'
+}));
 app.use(requestId());
-app.use(
-  cors({
-    origin: '*',
-    allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
-    exposeHeaders: ['X-Request-Id']
-  })
-);
+app.use(cors({
+  origin: '*',
+  allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
+  exposeHeaders: ['X-Request-Id']
+}));
 app.use(responseHandler());
 app.use(errorHandler());
 app.use(logMiddleware({ logger }));
